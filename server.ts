@@ -5,7 +5,8 @@ const morgan = require('morgan')
 
 const dbConnection  =  require ('./Config/data_base')
 import categoryRoute from './Routes/category_route';
-// Load environment variables before using them
+
+// Load environment variables
 dotenv.config({ path: 'config.env' });
 
 //Connect DataBase
