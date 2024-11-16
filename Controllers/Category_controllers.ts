@@ -1,7 +1,8 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 const asyncHandler = require('express-async-handler')
 import categoryModel from "../Model/category_schema";
 import slugify from "slugify";
+import ApiError from "../Utils/apiError";
 
 /**
  * @desc    Create a new category
@@ -25,8 +26,6 @@ export const getCategories = asyncHandler(async (req: Request, res: Response) =>
     const skip = (page - 1) * limit;
 
     const categories = await categoryModel.find({}).skip(skip).limit(limit);
-    console.log(categories);
-
     res.status(200).json({ results: categories.length, page, success: true, data: categories });
 });
 
@@ -35,11 +34,11 @@ export const getCategories = asyncHandler(async (req: Request, res: Response) =>
  * @route   GET /api/v1/categories/:id
  * @access  Public
  */
-export const getSpecificCategory = asyncHandler(async (req: Request<{ id: string }>, res: Response) => {
-    const { id } = req.params; 
+export const getSpecificCategory = asyncHandler(async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
+    const { id } = req.params;
     const category = await categoryModel.findById(id);
     if (!category) {
-        return res.status(404).json({ msg: `No category for this ID ${id}` });
+        return next(new ApiError(`No category for this ID ${id}`, 404))
     }
     res.status(200).json({ success: true, data: category });
 });
@@ -49,15 +48,12 @@ export const getSpecificCategory = asyncHandler(async (req: Request<{ id: string
  * @route   UPDATE /api/v1/categories/:id
  * @access  Private
  */
-export const updateCategory = asyncHandler(async (req: Request<{ id: string }, {}, { name: string }>, res: Response) => {
-    const { id } = req.params; 
-    const { name } = req.body; 
+export const updateCategory = asyncHandler(async (req: Request<{ id: string }, {}, { name: string }>, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const { name } = req.body;
     const categoryName = await categoryModel.findById(id);
     if (categoryName?.name === name) {
-        return res.status(400).json({
-            success: false,
-            message: "The new category name is the same as the existing name.",
-        });
+        return next(new ApiError("The new category name is the same as the existing name.", 400))
     }
 
     const category = await categoryModel.findByIdAndUpdate(
@@ -66,7 +62,7 @@ export const updateCategory = asyncHandler(async (req: Request<{ id: string }, {
         { new: true }
     );
     if (!category) {
-        return res.status(404).json({ msg: `No category for this ID ${id}` });
+        return next(new ApiError(`No category for this ID ${id}`, 404))
     }
     res.status(200).json({ success: true, data: category });
 });
@@ -76,12 +72,12 @@ export const updateCategory = asyncHandler(async (req: Request<{ id: string }, {
  * @route   DELETE /api/v1/categories/:id
  * @access  Private
  */
-export const deleteCategory = asyncHandler(async (req: Request<{ id: string }>, res: Response) => {
-    const { id } = req.params; 
+export const deleteCategory = asyncHandler(async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
+    const { id } = req.params;
     const category = await categoryModel.findByIdAndDelete(id);
 
     if (!category) {
-        return res.status(404).json({ msg: `No category for this ID ${id}` });
+        return next(new ApiError(`No category for this ID ${id}`, 404))
     }
     res.status(202).send();
 });

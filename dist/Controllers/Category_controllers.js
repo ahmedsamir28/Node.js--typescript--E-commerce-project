@@ -12,17 +12,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCategory = exports.updateCategory = exports.getSpecificCategory = exports.getCategory = exports.createCategory = void 0;
+exports.deleteCategory = exports.updateCategory = exports.getSpecificCategory = exports.getCategories = exports.createCategory = void 0;
 const asyncHandler = require('express-async-handler');
 const category_schema_1 = __importDefault(require("../Model/category_schema"));
 const slugify_1 = __importDefault(require("slugify"));
+const apiError_1 = __importDefault(require("../Utils/apiError"));
 /**
  * @desc    Create a new category
  * @route   POST /api/v1/categories
  * @access  Private
  */
 exports.createCategory = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const name = req.body.name;
+    const { name } = req.body;
     const category = yield category_schema_1.default.create({ name, slug: (0, slugify_1.default)(name) });
     res.status(200).json({ data: category });
 }));
@@ -31,13 +32,11 @@ exports.createCategory = asyncHandler((req, res) => __awaiter(void 0, void 0, vo
  * @route   GET /api/v1/categories
  * @access  Public
  */
-exports.getCategory = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // Parse query parameters safely
+exports.getCategories = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 5;
     const skip = (page - 1) * limit;
     const categories = yield category_schema_1.default.find({}).skip(skip).limit(limit);
-    console.log(categories);
     res.status(200).json({ results: categories.length, page, success: true, data: categories });
 }));
 /**
@@ -45,45 +44,42 @@ exports.getCategory = asyncHandler((req, res) => __awaiter(void 0, void 0, void 
  * @route   GET /api/v1/categories/:id
  * @access  Public
  */
-exports.getSpecificCategory = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getSpecificCategory = asyncHandler((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const category = yield category_schema_1.default.findById(id);
     if (!category) {
-        res.status(404).json({ msg: `No category for this ID ${id}` });
+        return next(new apiError_1.default(`No category for this ID ${id}`, 404));
     }
     res.status(200).json({ success: true, data: category });
 }));
 /**
- * @desc    update specific category
+ * @desc    Update specific category
  * @route   UPDATE /api/v1/categories/:id
  * @access  Private
  */
-exports.updateCategory = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateCategory = asyncHandler((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { name } = req.body;
     const categoryName = yield category_schema_1.default.findById(id);
-    if ((categoryName === null || categoryName === void 0 ? void 0 : categoryName.name) == name) {
-        return res.status(400).json({
-            success: false,
-            message: "The new category name is the same as the existing name.",
-        });
+    if ((categoryName === null || categoryName === void 0 ? void 0 : categoryName.name) === name) {
+        return next(new apiError_1.default("The new category name is the same as the existing name.", 400));
     }
     const category = yield category_schema_1.default.findByIdAndUpdate({ _id: id }, { name, slug: (0, slugify_1.default)(name) }, { new: true });
     if (!category) {
-        res.status(404).json({ msg: `No category for this ID ${id}` });
+        return next(new apiError_1.default(`No category for this ID ${id}`, 404));
     }
     res.status(200).json({ success: true, data: category });
 }));
 /**
- * @desc    delete specific category
- * @route   Delete /api/v1/categories/:id
+ * @desc    Delete specific category
+ * @route   DELETE /api/v1/categories/:id
  * @access  Private
  */
-exports.deleteCategory = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.deleteCategory = asyncHandler((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const category = yield category_schema_1.default.findByIdAndDelete(id);
     if (!category) {
-        res.status(404).json({ msg: `No category for this ID ${id}` });
+        return next(new apiError_1.default(`No category for this ID ${id}`, 404));
     }
     res.status(202).send();
 }));
@@ -91,17 +87,15 @@ exports.deleteCategory = asyncHandler((req, res) => __awaiter(void 0, void 0, vo
  * @desc    Search categories by keyword
  * @route   GET /api/v1/categories/search
  * @access  Public
-*/
+ */
 // export const searchCategories = asyncHandler(async (req: Request, res: Response) => {
-//     const keyword = req.query.keyword as string;
+//     const keyword: string = req.query.keyword as string; // Define keyword type
 //     if (!keyword) {
 //         return res.status(400).json({ success: false, message: "Keyword is required" });
 //     }
 //     const regex = new RegExp(keyword, "i");
 //     const categories = await categoryModel.find({
-//         $or: [
-//             { name: { $regex: regex } },
-//         ],
+//         $or: [{ name: { $regex: regex } }],
 //     });
 //     res.status(200).json({ success: true, data: categories });
 // });

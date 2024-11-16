@@ -15,4 +15,4 @@ const dbConnection = () => {
         process.exit(1);
     });
 };
-module.exports = dbConnection;
+exports.default = dbConnection;
