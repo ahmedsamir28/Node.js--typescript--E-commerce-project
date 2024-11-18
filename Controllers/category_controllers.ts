@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 const asyncHandler = require('express-async-handler')
-import categoryModel from "../Model/category_schema";
+import categoryModel from "../Model/category_modal";
 import slugify from "slugify";
 import ApiError from "../Utils/apiError";
 

@@ -1,10 +1,14 @@
 import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 const morgan = require('morgan')
-import categoryRoute from './Routes/category_route';
+
 import ApiError from './Utils/apiError';
 import dbConnection from './Config/data_base';
 import globalError from './Middlewares/errorMiddlewares';
+
+import categoryRoute from './Routes/category_route';
+import subCategoryRoute from './Routes/subCategory_Route';
+
 
 // Load environment variables
 dotenv.config({ path: 'config.env' });
@@ -31,6 +35,8 @@ if (process.env.NODE_ENV === 'development') {
 
 // Define Routes
 app.use('/api/v1/categories', categoryRoute);
+app.use('/api/v1/subcategories', subCategoryRoute);
+
 
 // Handle Undefined Routes
 app.all('*', (req: Request, _res: Response, next: NextFunction) => {

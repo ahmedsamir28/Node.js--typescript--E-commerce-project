@@ -1,10 +1,13 @@
 import express from 'express';
-import { createCategory, deleteCategory, getCategories, getSpecificCategory, updateCategory } from '../Controllers/Category_controllers';
+import { createCategory, deleteCategory, getCategories, getSpecificCategory, updateCategory } from '../Controllers/category_controllers';
 import { deleteCategoryValidator, getCategoryValidator, updateCategoryValidator } from '../Utils/Validators/category_validator';
+import subcategoriesRoute from './subCategory_Route'
 
 const router = express.Router();
 
+router.use('/:categoryId/subcategories', subcategoriesRoute);
+
 router.route('/').get(getCategories).post(createCategory)
-router.route('/:id').get(getCategoryValidator,getSpecificCategory).put(updateCategoryValidator,updateCategory).delete(deleteCategoryValidator,deleteCategory)
+router.route('/:id').get(getCategoryValidator, getSpecificCategory).put(updateCategoryValidator, updateCategory).delete(deleteCategoryValidator, deleteCategory)
 
 export default router;
