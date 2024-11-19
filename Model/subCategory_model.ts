@@ -32,6 +32,5 @@ const subCategorySchema = new Schema<ISubCategory>({
     timestamps: true
 });
 
-// Create and export the model
 const SubCategory = mongoose.model<ISubCategory>('SubCategory', subCategorySchema);
 export default SubCategory;
