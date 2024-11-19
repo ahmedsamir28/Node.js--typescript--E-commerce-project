@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 const asyncHandler = require('express-async-handler')
 import slugify from "slugify";
 import ApiError from "../Utils/apiError";
-import brandModel from "../Model/brand_modal";
+import brandModel from "../Model/brand_model";
 
 /**
  * @desc    Create a new brands
@@ -12,7 +12,7 @@ import brandModel from "../Model/brand_modal";
 export const createBrand = asyncHandler(async (req: Request, res: Response) => {
     const { name }: { name: string } = req.body;
     const brand = await brandModel.create({ name, slug: slugify(name) });
-    res.status(200).json({ data: brand });
+    res.status(201).json({ data: brand });
 });
 
 /**

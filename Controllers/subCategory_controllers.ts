@@ -3,7 +3,6 @@ const asyncHandler = require("express-async-handler");
 import slugify from "slugify";
 import ApiError from "../Utils/apiError";
 import subCategoryModel from "../Model/subCategory_model";
-import { FilterQuery } from "mongoose";
 
 // Create a custom interface extending Express Request
 interface CustomRequest extends Request {

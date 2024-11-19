@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 const asyncHandler = require('express-async-handler')
-import categoryModel from "../Model/category_modal";
+import categoryModel from "../Model/category_model";
 import slugify from "slugify";
 import ApiError from "../Utils/apiError";
 
@@ -12,7 +12,7 @@ import ApiError from "../Utils/apiError";
 export const createCategory = asyncHandler(async (req: Request, res: Response) => {
     const { name }: { name: string } = req.body;
     const category = await categoryModel.create({ name, slug: slugify(name) });
-    res.status(200).json({ data: category });
+    res.status(201).json({ data: category });
 });
 
 /**

@@ -9,6 +9,8 @@ import globalError from './Middlewares/errorMiddlewares';
 import categoryRoute from './Routes/category_route';
 import subCategoryRoute from './Routes/subCategory_Route';
 import brandRoute from './Routes/brand_route';
+import productRoute from './Routes/product_route';
+
 
 
 // Load environment variables
@@ -38,6 +40,8 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/v1/categories', categoryRoute);
 app.use('/api/v1/subcategories', subCategoryRoute);
 app.use('/api/v1/brands', brandRoute);
+app.use('/api/v1/products', productRoute);
+
 
 // Handle Undefined Routes
 app.all('*', (req: Request, _res: Response, next: NextFunction) => {

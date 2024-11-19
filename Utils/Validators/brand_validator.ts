@@ -1,7 +1,7 @@
 import { check } from "express-validator";
 import { RequestHandler } from "express";
 import validatorMiddleware from "../../Middlewares/validatorMiddleware";
-import brandModel from "../../Model/brand_modal";
+import brandModel from "../../Model/brand_model";
 
 // Updated type definition to handle both validation chains and middleware
 type ValidatorMiddleware = (RequestHandler | any)[];
