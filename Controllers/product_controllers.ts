@@ -12,11 +12,6 @@ import path from "path";
  */
 export const createProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     req.body.slug = slugify(req.body.title)
-    const products = await ProductModel.findOne({ title: req.body.title })
-    if (products) {
-        return next(new ApiError("The new product name is the same as the existing name.", 400))
-    }
-
     const product = await ProductModel.create(req.body);
     res.status(201).json({ data: product });
 });
