@@ -86,10 +86,10 @@ export const createProductValidator: ValidatorMiddleware = [
             }
         })
         .custom(async (val: string[], { req }) => {
-            const subcategories = await subCategoryModel.find({
+            const subCategories = await subCategoryModel.find({
                 category: req.body.category,
             });
-            const subCategoriesIdsInDB = subcategories.map((sub) => (sub._id as string).toString());
+            const subCategoriesIdsInDB = subCategories.map((sub) => (sub._id as string).toString());
             const isValid = val.every((id) => subCategoriesIdsInDB.includes(id));
             if (!isValid) {
                 throw new Error("Some subcategories do not belong to the specified category");

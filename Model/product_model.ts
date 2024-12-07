@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
 // Define the interface for the Product document
 interface IProduct extends Document {
@@ -18,7 +18,6 @@ interface IProduct extends Document {
     ratingsAverage?: number;
     ratingsQuantity?: number;
     createdAt: Date;
-    updatedAt: Date;
 }
 
 // Define the schema
@@ -27,7 +26,7 @@ const productSchema: Schema<IProduct> = new Schema<IProduct>(
         title: {
             type: String,
             required: true,
-            unique:true,
+            unique: true,
             trim: true,
             minlength: [3, "Too short product title"],
             maxlength: [100, "Too long product title"],
@@ -53,7 +52,6 @@ const productSchema: Schema<IProduct> = new Schema<IProduct>(
         price: {
             type: Number,
             required: [true, "Product price is required"],
-            trim: true,
             max: [200000, "Too long product price"],
         },
         priceAfterDiscount: {
@@ -100,6 +98,6 @@ const productSchema: Schema<IProduct> = new Schema<IProduct>(
 );
 
 // Create and export the model
-const ProductModel= mongoose.model<IProduct>("Product", productSchema);
+const ProductModel = mongoose.model<IProduct>("Product", productSchema);
 
 export default ProductModel;
