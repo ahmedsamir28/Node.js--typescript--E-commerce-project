@@ -1,6 +1,7 @@
 import { check } from "express-validator";
 import { RequestHandler } from "express";
 import validatorMiddleware from "../../Middlewares/validatorMiddleware";
+import slugify from "slugify";
 
 // Updated type definition to handle both validation chains and middleware
 type ValidatorMiddleware = (RequestHandler | any)[];
@@ -17,7 +18,11 @@ export const createCategoryValidator: ValidatorMiddleware = [
         .isLength({ min: 3 })
         .withMessage("Too short category name")
         .isLength({ max: 20 })
-        .withMessage("Too long category name"),
+        .withMessage("Too long category name")
+        .custom((val ,{req})=>{
+            req.body.slug = slugify(val)
+            return true
+        }),
     validatorMiddleware,
 ];
 
@@ -32,7 +37,11 @@ export const updateCategoryValidator: ValidatorMiddleware = [
         .isLength({ min: 3 })
         .withMessage("Too short category name")
         .isLength({ max: 20 })
-        .withMessage("Too long category name"),
+        .withMessage("Too long category name")
+        .custom((val ,{req})=>{
+            req.body.slug = slugify(val)
+            return true
+        }),
     validatorMiddleware,
 ];
 

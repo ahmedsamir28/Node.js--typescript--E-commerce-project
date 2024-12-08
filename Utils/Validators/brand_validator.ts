@@ -2,6 +2,7 @@ import { check } from "express-validator";
 import { RequestHandler } from "express";
 import validatorMiddleware from "../../Middlewares/validatorMiddleware";
 import brandModel from "../../Model/brand_model";
+import slugify from "slugify";
 
 // Updated type definition to handle both validation chains and middleware
 type ValidatorMiddleware = (RequestHandler | any)[];
@@ -26,6 +27,10 @@ export const createBrandValidator: ValidatorMiddleware = [
                 throw new Error('Brand name already exists');
             }
             return true;
+        })
+        .custom((val ,{req})=>{
+            req.body.slug = slugify(val)
+            return true
         }),
     validatorMiddleware,
 ];
@@ -41,7 +46,11 @@ export const updateBrandValidator: ValidatorMiddleware = [
         .isLength({ min: 3 })
         .withMessage("Too short Brand name")
         .isLength({ max: 20 })
-        .withMessage("Too long Brand name"),
+        .withMessage("Too long Brand name")
+        .custom((val ,{req})=>{
+            req.body.slug = slugify(val)
+            return true
+        }),
     validatorMiddleware,
 ];
 

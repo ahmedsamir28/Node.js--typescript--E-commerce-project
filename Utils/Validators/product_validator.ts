@@ -4,6 +4,7 @@ import validatorMiddleware from "../../Middlewares/validatorMiddleware";
 import categoryModel from "../../Model/category_model";
 import subCategoryModel from "../../Model/subCategory_model";
 import ProductModel from "../../Model/product_model";
+import slugify from "slugify";
 
 // Helper type to define an array of middleware
 type ValidatorMiddleware = RequestHandler[];
@@ -20,6 +21,10 @@ export const createProductValidator: ValidatorMiddleware = [
                 throw new Error('Product with this title already exists');
             }
             return true;
+        })
+        .custom((val, { req }) => {
+            req.body.slug = slugify(val)
+            return true
         }),
     check("description")
         .notEmpty()
@@ -126,6 +131,10 @@ export const updateProductValidator: ValidatorMiddleware = [
                 throw new Error('Product with this title already exists');
             }
             return true;
+        })
+        .custom((val, { req }) => {
+            req.body.slug = slugify(val)
+            return true
         }),
     validatorMiddleware,
 ];
