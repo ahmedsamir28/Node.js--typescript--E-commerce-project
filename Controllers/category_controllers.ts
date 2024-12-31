@@ -1,5 +1,8 @@
+import { uploadSingleImage } from "../Middlewares/uploadImageMiddleware";
 import categoryModel from "../Model/category_model";
 import { createItem, deleteItem, getAllItems, getSpecificItem, updateItem } from "./handlers_factory_controllers";
+
+export const uploadCategoryImage = uploadSingleImage('image')
 
 /**
  * @desc    Create a new category

@@ -41,7 +41,7 @@ class ApiFeatures {
         return this;
     }
 
-    fildes() {
+    fields() {
         if (this.queryString.fields) {
             const fields = (this.queryString.fields as string).split(',').join(' ');
             this.mongooseQuery = this.mongooseQuery.select(fields);

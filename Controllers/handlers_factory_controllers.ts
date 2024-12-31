@@ -17,11 +17,11 @@ export const getAllItems = (model: Model<any>, modelName: string = '') => expres
     // Default `req.filterObj` to an empty object if undefined
     const filter = req.filterObj || {}
     
-    const documentsCounts = await model.countDocuments();
+    const documentsCounts :number = await model.countDocuments();
     const apiFeatures = new ApiFeatures(model.find(filter), req.query)
         .filter()
         .sort()
-        .fildes()
+        .fields()
         .search(modelName)
         .paginate(documentsCounts)
     const { mongooseQuery, paginationResult } = apiFeatures;

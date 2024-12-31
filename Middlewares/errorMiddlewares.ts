@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import {NextFunction, Request, Response} from "express";
 import ApiError from "../Utils/apiError";
 
 const globalError = (err: ApiError, req: Request, res: Response, next: NextFunction) => {
