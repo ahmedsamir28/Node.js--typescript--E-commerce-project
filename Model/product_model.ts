@@ -97,6 +97,28 @@ const productSchema: Schema<IProduct> = new Schema<IProduct>(
     }
 );
 
+const setImageUrl = (doc: IProduct) => {
+    if (doc.imageCover) {
+        const imageCoverUrl = `${process.env.BASE_URL}/products/${doc.imageCover}`;
+        doc.imageCover = imageCoverUrl;
+    }
+    if (doc.images) {
+        const images: string[] = [];
+        doc.images.forEach((image) => {
+            const imageUrl = `${process.env.BASE_URL}/products/${image}`;
+            images.push(imageUrl);
+        });
+        doc.images = images;
+    }
+};
+
+productSchema.post('init', (doc) => {
+    setImageUrl(doc)
+})
+productSchema.post('save', (doc) => {
+    setImageUrl(doc)
+})
+
 // Create and export the model
 const ProductModel = mongoose.model<IProduct>("Product", productSchema);
 

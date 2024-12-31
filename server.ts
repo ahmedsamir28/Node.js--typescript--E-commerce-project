@@ -10,6 +10,7 @@ import categoryRoute from './Routes/category_route';
 import subCategoryRoute from './Routes/subCategory_Route';
 import brandRoute from './Routes/brand_route';
 import productRoute from './Routes/product_route';
+import path from 'path';
 
 
 
@@ -29,6 +30,8 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, 'Uploads')))
 
 // Use morgan logging only in development mode
 if (process.env.NODE_ENV === 'development') {

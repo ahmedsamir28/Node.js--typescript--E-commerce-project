@@ -15,13 +15,13 @@ export const createProductValidator: ValidatorMiddleware = [
         .withMessage("Title must be at least 3 characters")
         .notEmpty()
         .withMessage("Product title is required")
-        .custom(async (val, { req }) => {
-            const product = await ProductModel.findOne({ title: req.body.title });
-            if (product) {
-                throw new Error('Product with this title already exists');
-            }
-            return true;
-        })
+        // .custom(async (val, { req }) => {
+        //     const product = await ProductModel.findOne({ title: req.body.title });
+        //     if (product) {
+        //         throw new Error('Product with this title already exists');
+        //     }
+        //     return true;
+        // })
         .custom((val, { req }) => {
             req.body.slug = slugify(val)
             return true

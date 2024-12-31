@@ -36,11 +36,12 @@ const setImageUrl = (doc: ICategory) => {
     }
 };
 
-// Hooks to apply the helper function
+// findOne, findAll and update 
 categorySchema.post("init", (doc: ICategory) => {
     setImageUrl(doc);
 });
 
+// create
 categorySchema.post("save", (doc: ICategory) => {
     setImageUrl(doc);
 });
