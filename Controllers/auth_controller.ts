@@ -10,10 +10,8 @@ export const signup = expressAsyncHandler(async (req: Request, res: Response, ne
         res.status(400).json({message: "Passwords do not match"});
         return;
     }
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the user
     const user = await userModel.create({
         name,
         email,
@@ -21,6 +19,6 @@ export const signup = expressAsyncHandler(async (req: Request, res: Response, ne
     });
 
     // Remove the password from the response
+    const userResponse = { ...user.toObject(), password: undefined };
 
-    res.status(201).json({data: user});
-});
+    res.status(201).json({ data: userResponse });});
