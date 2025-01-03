@@ -33,7 +33,7 @@ export const getSpecificItem = (model: Model<any>) => expressAsyncHandler(async 
     const { id } = req.params;
     const document = await model.findById(id)
     if (!document) {
-        return next(new ApiError(`No product for this ID ${id}`, 404))
+        return next(new ApiError(`No item for this ID ${id}`, 404))
     }
     res.status(200).json({ success: true, data: document });
 });
@@ -47,7 +47,7 @@ export const updateItem = (model: Model<any>) => expressAsyncHandler(async (req:
         { new: true }
     );
     if (!document) {
-        return next(new ApiError(`No product for this ID ${id}`, 404))
+        return next(new ApiError(`No item for this ID ${id}`, 400))
     }
     res.status(200).json({ success: true, data: document });
 })
@@ -57,7 +57,7 @@ export const deleteItem = (model: Model<any>) => expressAsyncHandler(async (req:
     const document = await model.findByIdAndDelete(id);
 
     if (!document) {
-        return next(new ApiError(`No product for this ID ${id}`, 404))
+        return next(new ApiError(`No item for this ID ${id}`, 404))
     }
     res.status(204).send();
 });

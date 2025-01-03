@@ -12,6 +12,7 @@
   "dependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.9.0",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-async-handler": "^1.2.0",
@@ -28,6 +29,7 @@
   "repository": "https://github.com/ahmedsamir28/Node.js--typescript--E-commerce-project.git",
   "author": "ahmedsamir <ahmed.samir.gholmish@gmail.com>",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/multer": "^1.4.12"
   }
 }

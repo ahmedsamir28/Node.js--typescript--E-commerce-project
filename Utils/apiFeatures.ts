@@ -8,6 +8,7 @@ interface IPaginationResult {
     prev?: number
 
 }
+
 class ApiFeatures {
     mongooseQuery: Query<any, any>;
     queryString: Record<string, any>;

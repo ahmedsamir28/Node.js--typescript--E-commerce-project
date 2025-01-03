@@ -10,6 +10,10 @@ import categoryRoute from './Routes/category_route';
 import subCategoryRoute from './Routes/subCategory_Route';
 import brandRoute from './Routes/brand_route';
 import productRoute from './Routes/product_route';
+import userRoute from './Routes/user_route';
+import authRoute from './Routes/auth_route';
+
+
 import path from 'path';
 
 
@@ -44,6 +48,11 @@ app.use('/api/v1/categories', categoryRoute);
 app.use('/api/v1/subcategories', subCategoryRoute);
 app.use('/api/v1/brands', brandRoute);
 app.use('/api/v1/products', productRoute);
+app.use('/api/v1/products', productRoute);
+app.use('/api/v1/users', userRoute);
+app.use('/api/v1/auth', authRoute);
+
+
 
 
 // Handle Undefined Routes
