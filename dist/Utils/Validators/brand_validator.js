@@ -16,6 +16,7 @@ exports.deleteBrandValidator = exports.updateBrandValidator = exports.createBran
 const express_validator_1 = require("express-validator");
 const validatorMiddleware_1 = __importDefault(require("../../Middlewares/validatorMiddleware"));
 const brand_model_1 = __importDefault(require("../../Model/brand_model"));
+const slugify_1 = __importDefault(require("slugify"));
 exports.getBrandValidator = [
     (0, express_validator_1.check)("id").isMongoId().withMessage("Invalid Brand id format"),
     validatorMiddleware_1.default,
@@ -35,7 +36,11 @@ exports.createBrandValidator = [
             throw new Error('Brand name already exists');
         }
         return true;
-    })),
+    }))
+        .custom((val, { req }) => {
+        req.body.slug = (0, slugify_1.default)(val);
+        return true;
+    }),
     validatorMiddleware_1.default,
 ];
 exports.updateBrandValidator = [
@@ -49,7 +54,11 @@ exports.updateBrandValidator = [
         .isLength({ min: 3 })
         .withMessage("Too short Brand name")
         .isLength({ max: 20 })
-        .withMessage("Too long Brand name"),
+        .withMessage("Too long Brand name")
+        .custom((val, { req }) => {
+        req.body.slug = (0, slugify_1.default)(val);
+        return true;
+    }),
     validatorMiddleware_1.default,
 ];
 exports.deleteBrandValidator = [

@@ -24,36 +24,47 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const brandSchema = new mongoose_1.Schema({
+const userSchema = new mongoose_1.Schema({
     name: {
         type: String,
-        required: [true, "Brand name is required"],
-        unique: true,
-        minlength: [3, "Brand name is too short"],
-        maxlength: [20, "Brand name is too long"],
+        trime: true,
+        required: [true, 'nmae required']
     },
-    image: String,
     slug: {
         type: String,
-        lowercase: true,
+        lowercase: true
+    },
+    email: {
+        type: String,
+        required: [true, 'email required'],
+        unique: true,
+        lowercase: true
+    },
+    phone: String,
+    profileImage: String,
+    password: {
+        type: String,
+        required: [true, 'password is required'],
+        minlength: [3, 'Too short password'],
+    },
+    passwordChangedAt: Date,
+    passwordResetCode: String,
+    passwordresetExpire: Date,
+    passwordResetVerified: Boolean,
+    role: {
+        type: String,
+        enum: ['user', 'admin', 'manager', 'user'],
+        default: 'user'
     },
 }, { timestamps: true });
 // Helper function to set the image URL
 const setImageUrl = (doc) => {
-    if (doc.image) {
+    if (doc.profileImage) {
         const baseUrl = process.env.BASE_URL || "http://localhost:8000";
-        const imageUrl = `${baseUrl}/api/v1/brands/${doc.image}`;
-        doc.image = imageUrl;
+        const imageUrl = `${baseUrl}/api/v1/users/${doc.profileImage}`;
+        doc.profileImage = imageUrl;
     }
 };
-// Hook: Runs after retrieving a document from the database
-brandSchema.post("init", (doc) => {
-    setImageUrl(doc);
-});
-// Hook: Runs after saving a document to the database
-brandSchema.post("save", (doc) => {
-    setImageUrl(doc);
-});
 // Create the Brand model
-const brandModel = mongoose_1.default.model("Brand", brandSchema);
-exports.default = brandModel;
+const userModel = mongoose_1.default.model("User", userSchema);
+exports.default = userModel;

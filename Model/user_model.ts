@@ -19,6 +19,14 @@ interface IUser extends Document {
     createdAt: Date;
 }
 
+declare global {
+    namespace Express {
+        interface Request {
+            user?: IUser;
+        }
+    }
+}
+
 const userSchema = new Schema<IUser>(
     {
         name: {

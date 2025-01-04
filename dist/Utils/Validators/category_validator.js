@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteCategoryValidator = exports.updateCategoryValidator = exports.createCategoryValidator = exports.getCategoryValidator = void 0;
 const express_validator_1 = require("express-validator");
 const validatorMiddleware_1 = __importDefault(require("../../Middlewares/validatorMiddleware"));
+const slugify_1 = __importDefault(require("slugify"));
 exports.getCategoryValidator = [
     (0, express_validator_1.check)("id").isMongoId().withMessage("Invalid category id format"),
     validatorMiddleware_1.default,
@@ -17,7 +18,11 @@ exports.createCategoryValidator = [
         .isLength({ min: 3 })
         .withMessage("Too short category name")
         .isLength({ max: 20 })
-        .withMessage("Too long category name"),
+        .withMessage("Too long category name")
+        .custom((val, { req }) => {
+        req.body.slug = (0, slugify_1.default)(val);
+        return true;
+    }),
     validatorMiddleware_1.default,
 ];
 exports.updateCategoryValidator = [
@@ -31,7 +36,11 @@ exports.updateCategoryValidator = [
         .isLength({ min: 3 })
         .withMessage("Too short category name")
         .isLength({ max: 20 })
-        .withMessage("Too long category name"),
+        .withMessage("Too long category name")
+        .custom((val, { req }) => {
+        req.body.slug = (0, slugify_1.default)(val);
+        return true;
+    }),
     validatorMiddleware_1.default,
 ];
 exports.deleteCategoryValidator = [

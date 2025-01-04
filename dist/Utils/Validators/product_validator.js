@@ -18,19 +18,24 @@ const validatorMiddleware_1 = __importDefault(require("../../Middlewares/validat
 const category_model_1 = __importDefault(require("../../Model/category_model"));
 const subCategory_model_1 = __importDefault(require("../../Model/subCategory_model"));
 const product_model_1 = __importDefault(require("../../Model/product_model"));
+const slugify_1 = __importDefault(require("slugify"));
 exports.createProductValidator = [
     (0, express_validator_1.check)("title")
         .isLength({ min: 3 })
         .withMessage("Title must be at least 3 characters")
         .notEmpty()
         .withMessage("Product title is required")
-        .custom((val_1, _a) => __awaiter(void 0, [val_1, _a], void 0, function* (val, { req }) {
-        const product = yield product_model_1.default.findOne({ title: req.body.title });
-        if (product) {
-            throw new Error('Product with this title already exists');
-        }
+        // .custom(async (val, { req }) => {
+        //     const product = await ProductModel.findOne({ title: req.body.title });
+        //     if (product) {
+        //         throw new Error('Product with this title already exists');
+        //     }
+        //     return true;
+        // })
+        .custom((val, { req }) => {
+        req.body.slug = (0, slugify_1.default)(val);
         return true;
-    })),
+    }),
     (0, express_validator_1.check)("description")
         .notEmpty()
         .withMessage("Product description is required")
@@ -133,7 +138,11 @@ exports.updateProductValidator = [
             throw new Error('Product with this title already exists');
         }
         return true;
-    })),
+    }))
+        .custom((val, { req }) => {
+        req.body.slug = (0, slugify_1.default)(val);
+        return true;
+    }),
     validatorMiddleware_1.default,
 ];
 exports.deleteProductValidator = [

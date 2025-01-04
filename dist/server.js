@@ -13,6 +13,9 @@ const category_route_1 = __importDefault(require("./Routes/category_route"));
 const subCategory_Route_1 = __importDefault(require("./Routes/subCategory_Route"));
 const brand_route_1 = __importDefault(require("./Routes/brand_route"));
 const product_route_1 = __importDefault(require("./Routes/product_route"));
+const user_route_1 = __importDefault(require("./Routes/user_route"));
+const auth_route_1 = __importDefault(require("./Routes/auth_route"));
+const path_1 = __importDefault(require("path"));
 // Load environment variables
 dotenv_1.default.config({ path: 'config.env' });
 // Validate required environment variables
@@ -25,6 +28,7 @@ if (!process.env.PORT || !process.env.NODE_ENV) {
 const app = (0, express_1.default)();
 // Middlewares
 app.use(express_1.default.json());
+app.use(express_1.default.static(path_1.default.join(__dirname, 'Uploads')));
 // Use morgan logging only in development mode
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
@@ -35,6 +39,9 @@ app.use('/api/v1/categories', category_route_1.default);
 app.use('/api/v1/subcategories', subCategory_Route_1.default);
 app.use('/api/v1/brands', brand_route_1.default);
 app.use('/api/v1/products', product_route_1.default);
+app.use('/api/v1/products', product_route_1.default);
+app.use('/api/v1/users', user_route_1.default);
+app.use('/api/v1/auth', auth_route_1.default);
 // Handle Undefined Routes
 app.all('*', (req, _res, next) => {
     next(new apiError_1.default(`Can't find this route: ${req.originalUrl}`, 400));
