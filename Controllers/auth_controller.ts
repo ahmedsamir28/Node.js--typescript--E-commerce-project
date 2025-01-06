@@ -6,6 +6,7 @@ import ApiError from "../Utils/apiError";
 import {createToken} from "../Utils/createToken";
 import jwt from "jsonwebtoken";
 import apiError from "../Utils/apiError";
+import crypto from 'crypto';
 
 /**
  * @desc    SignUp
@@ -57,7 +58,6 @@ export const login = expressAsyncHandler(async (req: Request, res: Response, nex
     const userResponse = {...user.toObject(), password: undefined};
     res.status(200).json({data: userResponse, token});
 });
-
 /**
  * @desc    Protect routes - Ensure user is logged in
  * @access  Private

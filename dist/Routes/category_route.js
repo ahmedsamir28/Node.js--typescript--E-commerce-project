@@ -12,6 +12,6 @@ const router = express_1.default.Router();
 router.use('/:categoryId/subcategories', subCategory_Route_1.default);
 router.route('/')
     .get(category_controllers_1.getCategories)
-    .post(auth_controller_1.protect, category_controllers_1.uploadCategoryImage, category_controllers_1.resizeImage, category_validator_1.createCategoryValidator, category_controllers_1.createCategory);
+    .post(auth_controller_1.protect, (0, auth_controller_1.allowedTo)('admin', 'manager'), category_controllers_1.uploadCategoryImage, category_controllers_1.resizeImage, category_validator_1.createCategoryValidator, category_controllers_1.createCategory);
 router.route('/:id').get(category_validator_1.getCategoryValidator, category_controllers_1.getSpecificCategory).put(category_validator_1.updateCategoryValidator, category_controllers_1.updateCategory).delete(category_validator_1.deleteCategoryValidator, category_controllers_1.deleteCategory);
 exports.default = router;
