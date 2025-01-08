@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, {Schema, Document} from "mongoose";
 
 // Define the interface for the Product document
 interface IProduct extends Document {
@@ -94,8 +94,16 @@ const productSchema: Schema<IProduct> = new Schema<IProduct>(
     },
     {
         timestamps: true,
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true }
     }
 );
+
+productSchema.virtual('reviews', {
+    ref:'Review',
+    foreignField:'product',
+    localField:'_id'
+})
 
 const setImageUrl = (doc: IProduct) => {
     if (doc.imageCover) {

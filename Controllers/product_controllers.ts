@@ -68,7 +68,7 @@ export const getProducts = getAllItems(ProductModel, 'Products')
  * @route   GET /api/v1/products/:id
  * @access  Public
  */
-export const getSpecificProduct = getSpecificItem(ProductModel)
+export const getSpecificProduct = getSpecificItem(ProductModel,"reviews")
 /**
  * @desc    Update specific product
  * @route   UPDATE /api/v1/products/:id

@@ -12,6 +12,8 @@ import brandRoute from './Routes/brand_route';
 import productRoute from './Routes/product_route';
 import userRoute from './Routes/user_route';
 import authRoute from './Routes/auth_route';
+import reviewRoute from './Routes/review_route';
+
 
 
 import path from 'path';
@@ -51,6 +53,8 @@ app.use('/api/v1/products', productRoute);
 app.use('/api/v1/products', productRoute);
 app.use('/api/v1/users', userRoute);
 app.use('/api/v1/auth', authRoute);
+app.use('/api/v1/reviews', reviewRoute);
+
 
 
 
