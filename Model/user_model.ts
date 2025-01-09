@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema, CallbackWithoutResultAndOptionalError } from "mongoose";
 import bcrypt from "bcrypt";
 
-interface IUser extends Document {
+export interface IUser extends Document {
     name: string;
     slug: string;
     email: string;
@@ -67,14 +67,18 @@ const userSchema = new Schema<IUser>(
         },
         wishlist: [
             {
-                type: mongoose.Schema.Types.ObjectId,
+                type: mongoose.Schema.ObjectId,
                 ref: 'Product',
             },
         ],
         addresses: [
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Address',
+                id: { type: mongoose.Schema.Types.ObjectId },
+                alias :String,
+                details:String,
+                phone:String,
+                city:String,
+                postalCode:String
             },
         ],
     },
