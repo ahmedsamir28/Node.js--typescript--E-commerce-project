@@ -14,6 +14,10 @@ import userRoute from './Routes/user_route';
 import authRoute from './Routes/auth_route';
 import reviewRoute from './Routes/review_route';
 import wishListRoute from './Routes/wishList_route';
+import addressRoute from './Routes/address_route';
+import couponRoute from './Routes/coupon_route';
+
+
 
 
 
@@ -55,7 +59,12 @@ app.use('/api/v1/products', productRoute);
 app.use('/api/v1/products', productRoute);
 app.use('/api/v1/users', userRoute);
 app.use('/api/v1/auth', authRoute);
+app.use('/api/v1/reviews', reviewRoute);
 app.use('/api/v1/wishlist', wishListRoute);
+app.use('/api/v1/addresses', addressRoute);
+app.use('/api/v1/coupons', couponRoute);
+
+
 
 
 
